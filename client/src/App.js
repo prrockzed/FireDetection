@@ -6,6 +6,7 @@ import MQTTLogs from './components/MQTTLogs'; // Import the MQTTLogs component
 
 const App = () => {
     const [loggedInUser, setLoggedInUser] = useState(null);
+    const [showRegister, setShowRegister] = useState(false);
 
     const handleLogout = () => {
         localStorage.removeItem('token'); // Remove token from localStorage
@@ -22,9 +23,12 @@ const App = () => {
                     {loggedInUser === 'kabir' && <MQTTLogs />}
                 </div>
             ) : (
-                <div>
-                    <Register />
-                    <Login setLoggedInUser={setLoggedInUser} />
+                <div className="auth-container">
+                    {showRegister ? (
+                        <Register setShowRegister={setShowRegister} />
+                    ) : (
+                        <Login setLoggedInUser={setLoggedInUser} setShowRegister={setShowRegister} />
+                    )}
                 </div>
             )}
         </div>

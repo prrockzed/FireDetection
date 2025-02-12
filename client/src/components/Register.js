@@ -1,9 +1,8 @@
-// client/src/components/Register.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import './style.css'; // Import CSS for styling
+import './style.css';
 
-const Register = () => {
+const Register = ({ setShowRegister }) => {
     const [formData, setFormData] = useState({
         username: '',
         password: ''
@@ -21,10 +20,10 @@ const Register = () => {
                 username,
                 password
             });
-            setMessage('Registered successfully'); // Set success message
+            setMessage('Registered successfully');
         } catch (err) {
             console.error(err.response.data);
-            setMessage('Failed to register, User already exists'); // Set error message
+            setMessage('Failed to register, User already exists');
         }
     };
 
@@ -36,10 +35,13 @@ const Register = () => {
                 <input type="password" placeholder="Password" name="password" value={password} onChange={onChange} required />
                 <button type="submit">Register</button>
             </form>
-            <p className="message">{message}</p>
+            <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>{message}</p>
+            <p className="toggle-link">
+                Already registered?{' '}
+                <span onClick={() => setShowRegister(false)}>Login now</span>
+            </p>
         </div>
     );
 };
 
 export default Register;
-

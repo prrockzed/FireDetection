@@ -1,9 +1,8 @@
-// client/src/components/Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import './style.css'; // Import CSS for styling
+import './style.css';
 
-const Login = ({ setLoggedInUser }) => {
+const Login = ({ setLoggedInUser, setShowRegister }) => {
     const [formData, setFormData] = useState({
         username: '',
         password: ''
@@ -12,27 +11,21 @@ const Login = ({ setLoggedInUser }) => {
 
     const { username, password } = formData;
 
-    const onChange = e => setFormData({ ...formData, 
-                                      [e.target.name]: e.target.value });
+    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const onSubmit = async e => {
         e.preventDefault();
         try {
-            const res = 
-                await axios.post('http://localhost:8080/api/auth/login', 
-            {
+            const res = await axios.post('http://localhost:8080/api/auth/login', {
                 username,
                 password
             });
             localStorage.setItem('token', res.data.token);
             setLoggedInUser(username);
-            
-            // Set success message
             setMessage('Logged in successfully');
         } catch (err) {
             console.error(err.response.data);
-            // Set error message
-            setMessage('Failed to login - wrong credentials');         
+            setMessage('Failed to login - wrong credentials');
         }
     };
 
@@ -40,24 +33,17 @@ const Login = ({ setLoggedInUser }) => {
         <div className="auth-form">
             <h2>Login</h2>
             <form onSubmit={onSubmit}>
-                <input type="text" 
-                       placeholder="Username" 
-                       name="username" 
-                       value={username} 
-                       onChange={onChange} 
-                       required />
-                <input type="password" 
-                       placeholder="Password" 
-                       name="password" 
-                       value={password} 
-                       onChange={onChange} 
-                       required />
+                <input type="text" placeholder="Username" name="username" value={username} onChange={onChange} required />
+                <input type="password" placeholder="Password" name="password" value={password} onChange={onChange} required />
                 <button type="submit">Login</button>
             </form>
-            <p className="message">{message}</p>
+            <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>{message}</p>
+            <p className="toggle-link">
+                Not registered already?{' '}
+                <span onClick={() => setShowRegister(true)}>Register now</span>
+            </p>
         </div>
     );
 };
 
 export default Login;
-
