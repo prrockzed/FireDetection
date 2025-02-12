@@ -93,3 +93,40 @@ body {
 .toggle-link span:hover {
     color: #0056b3;
 }
+
+/* Navbar styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-left {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.navbar-right {
+    font-size: 16px;
+}
+
+.logout-link {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.logout-link:hover {
+    color: #ffdd57;
+}
+
+/* Adjust MQTTLogs width */
+.logsContainer {
+    maxWidth: '1200px'; /* Increased width */
+    margin: 'auto';
+    textAlign: 'center';
+    padding: '20px';
+}

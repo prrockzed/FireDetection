@@ -36,7 +36,7 @@ const MQTTLogs = () => {
 
 const styles = {
     logsContainer: {
-        maxWidth: '800px',
+        maxWidth: '1200px', // Increased width
         margin: 'auto',
         textAlign: 'center',
         padding: '20px',

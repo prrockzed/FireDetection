@@ -1,27 +1,21 @@
-// client/src/App.js
 import React, { useState } from 'react';
-import Register from './components/Register';
 import Login from './components/Login';
-import MQTTLogs from './components/MQTTLogs'; // Import the MQTTLogs component
+import Register from './components/Register';
+import MQTTLogs from './components/MQTTLogs';
+import Navbar from './components/Navbar';
+import './components/style.css';
 
 const App = () => {
     const [loggedInUser, setLoggedInUser] = useState(null);
     const [showRegister, setShowRegister] = useState(false);
 
-    const handleLogout = () => {
-        localStorage.removeItem('token'); // Remove token from localStorage
-        setLoggedInUser(null); // Set logged-in user to null
-    };
-
     return (
-        <div className="App">
+        <div>
             {loggedInUser ? (
-                <div>
-                    <p>Welcome {loggedInUser}</p>
-                    <button onClick={handleLogout}>Logout</button>
-                    {/* Render MQTTLogs only if the user is "kabir" */}
-                    {loggedInUser === 'kabir' && <MQTTLogs />}
-                </div>
+                <>
+                    <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
+                    <MQTTLogs />
+                </>
             ) : (
                 <div className="auth-container">
                     {showRegister ? (
