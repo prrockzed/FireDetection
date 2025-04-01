@@ -1,6 +1,6 @@
 // server/config.js
 module.exports = {
-    mongoURI: 'mongodb+srv://priyanshuranjan2806:eN2BdZsNEKTq4DmB@firedetectionsystem.eqcx8.mongodb.net/?retryWrites=true&w=majority&appName=FireDetectionSystem',
+    mongoURI: 'mongodb+srv://suryanshkgp:m3$JviM$d*X32cB@cluster0.lgvfa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0m',
     jwtSecret: 'hello'
 };
 
