@@ -29,10 +29,7 @@ mongoose.connect(MONGO_URI)
 // Add the MongoDB client connection for the logs API to match Python client
 let database;
 async function connectToDatabase() {
-  const client = new MongoClient(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  const client = new MongoClient(MONGO_URI);
   try {
     await client.connect();
     console.log("Connected to MongoDB with MongoClient");
@@ -118,6 +115,9 @@ app.post('/api/logs', async (req, res) => {
 
 // Serve static files from the React app
 app.use(express.static('client/build'));
+
+const chatbotRoute = require('./routes/chatbot');
+app.use('/api/chatbot', chatbotRoute);
 
 // Handle WebSocket connections
 io.on('connection', (socket) => {

@@ -183,10 +183,56 @@ const DownloadTab = () => {
 
 // New component for Chatbot tab
 const ChatbotTab = () => {
+  const [nodeId, setNodeId] = useState('');
+  const [query, setQuery] = useState('');
+  const [response, setResponse] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleChat = async () => {
+    if (!nodeId || !query) {
+      alert("Please provide both Node ID and a query");
+      return;
+    }
+    setLoading(true);
+    setResponse('');
+    try {
+      const res = await axios.get(`http://localhost:8080/api/chatbot/query`, {
+        params: { node_id: nodeId, query }
+      });
+      setResponse(res.data.response);
+    } catch (err) {
+      console.error("Chatbot query failed:", err);
+      setResponse("Failed to get response from chatbot.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="chatbot-container">
-      <h2>Chatbot</h2>
-      <p>Chatbot functionality will be implemented here.</p>
+      <h2>Chatbot Assistant</h2>
+      <input
+        type="text"
+        placeholder="Enter Node ID"
+        value={nodeId}
+        onChange={e => setNodeId(e.target.value)}
+        className="input-field"
+      />
+      <textarea
+        placeholder="Ask a question about the sensor data"
+        value={query}
+        onChange={e => setQuery(e.target.value)}
+        className="textarea"
+      />
+      <button onClick={handleChat} disabled={loading}>
+        {loading ? "Processing..." : "Ask"}
+      </button>
+      {response && (
+        <div className="response-box">
+          <strong>Response:</strong>
+          <p>{response}</p>
+        </div>
+      )}
     </div>
   );
 };
