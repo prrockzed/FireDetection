@@ -4,10 +4,11 @@ import './style.css';
 
 const Login = ({ setLoggedInUser, setShowRegister }) => {
     const [formData, setFormData] = useState({
-        username: '',
-        password: ''
+        username: "",
+        password: "",
     });
-    const [message, setMessage] = useState('');
+
+    const [message, setMessage] = useState("");
 
     const { username, password } = formData;
 
@@ -24,8 +25,25 @@ const Login = ({ setLoggedInUser, setShowRegister }) => {
             setLoggedInUser(username);
             setMessage('Logged in successfully');
         } catch (err) {
-            console.error(err.response.data);
-            setMessage('Failed to login - wrong credentials');
+            console.error('Login error:', err);
+            let errorMessage = 'Failed to login';
+            
+            if (err.response) {
+                // The request was made and the server responded with a status code
+                if (err.response.data && err.response.data.message) {
+                    errorMessage = err.response.data.message;
+                } else {
+                    errorMessage = err.response.statusText || 'Invalid credentials';
+                }
+            } else if (err.request) {
+                // The request was made but no response was received
+                errorMessage = 'No response from server';
+            } else {
+                // Something happened in setting up the request
+                errorMessage = 'Login request failed';
+            }
+            
+            setMessage(errorMessage);
         }
     };
 
@@ -33,11 +51,27 @@ const Login = ({ setLoggedInUser, setShowRegister }) => {
         <div className="auth-form">
             <h2>Login</h2>
             <form onSubmit={onSubmit}>
-                <input type="text" placeholder="Username" name="username" value={username} onChange={onChange} required />
-                <input type="password" placeholder="Password" name="password" value={password} onChange={onChange} required />
+                <input 
+                    type="text" 
+                    placeholder="Username" 
+                    name="username" 
+                    value={username} 
+                    onChange={onChange} 
+                    required 
+                />
+                <input 
+                    type="password" 
+                    placeholder="Password" 
+                    name="password" 
+                    value={password} 
+                    onChange={onChange} 
+                    required 
+                />
                 <button type="submit">Login</button>
             </form>
-            <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>{message}</p>
+            <p className={`message ${message.includes('successfully') ? 'success' : 'error'}`}>
+                {message}
+            </p>
             <p className="toggle-link">
                 Not registered already?{' '}
                 <span onClick={() => setShowRegister(true)}>Register now</span>
