@@ -6,6 +6,8 @@ const config = require('./config');
 const authRoutes = require('./routes/auth');
 const http = require('http');
 const socketIo = require('socket.io');
+// In your index.js, add this line after the existing routes
+const logsRoutes = require('./routes/logs');
 
 const app = express();
 const server = http.createServer(app);
@@ -23,7 +25,7 @@ mongoose.connect(config.mongoURI)
     .catch(err => console.error(err));
 
 app.use('/api/auth', authRoutes);
-
+app.use('/api/logs', logsRoutes);
 // Serve static files from the React app
 app.use(express.static('client/build'));
 
