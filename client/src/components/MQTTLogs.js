@@ -6,7 +6,7 @@ const MQTTLogs = () => {
   const [node2Logs, setNode2Logs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch all logs and distribute randomly between nodes
+  // Fetch all logs and distribute between nodes
   useEffect(() => {
     const fetchLogs = async () => {
       try {
@@ -15,7 +15,7 @@ const MQTTLogs = () => {
         const response = await axios.get('http://localhost:8080/api/logs');
         const allLogs = response.data;
         
-        // Randomly distribute logs between nodes
+        // Distribute logs between nodes
         const node1LogsArray = [];
         const node2LogsArray = [];
         
@@ -23,7 +23,7 @@ const MQTTLogs = () => {
           // Format the log entry
           const formattedLog = `[${new Date(log.timestamp).toLocaleTimeString()}] Node ${log.nodeId}: Fire Status ${log.fireStatus}`;
           
-          // If log already has a nodeId, respect it
+          // Distribute by nodeId
           if (log.nodeId === 1) {
             node1LogsArray.push(formattedLog);
           } else if (log.nodeId === 2) {
@@ -31,7 +31,7 @@ const MQTTLogs = () => {
           }
         });
         
-        // Sort logs by timestamp (assuming the timestamp is part of the log string)
+        // Sort logs by timestamp
         node1LogsArray.sort();
         node2LogsArray.sort();
         
@@ -43,94 +43,55 @@ const MQTTLogs = () => {
         setIsLoading(false);
       }
     };
-
+    
     fetchLogs();
+    
+    // Set up periodic refresh (optional)
+    const interval = setInterval(fetchLogs, 30000); // Refresh every 30 seconds
+    
+    // Clean up on unmount
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div style={styles.logsContainer}>
+    <div className="logsContainer">
       <h2>📡 Fire Detection Logs</h2>
-      <div style={styles.logsWrapper}>
-        <div style={styles.logBox}>
+      <div className="logsWrapper">
+        <div className="logBox">
           <h3>Node 1</h3>
-          <div style={styles.logs}>
+          <div className="logs">
             {isLoading ? (
-              <div style={styles.loading}>Loading logs...</div>
+              <div className="loading">Loading logs...</div>
             ) : node1Logs.length > 0 ? (
               node1Logs.map((log, index) => (
-                <div key={index} style={styles.logEntry}>
+                <div key={index} className="logEntry">
                   {log}
                 </div>
               ))
             ) : (
-              <div style={styles.noLogs}>No logs available for Node 1</div>
+              <div className="noLogs">No logs available for Node 1</div>
             )}
           </div>
         </div>
-        
-        <div style={styles.logBox}>
+        <div className="logBox">
           <h3>Node 2</h3>
-          <div style={styles.logs}>
+          <div className="logs">
             {isLoading ? (
-              <div style={styles.loading}>Loading logs...</div>
+              <div className="loading">Loading logs...</div>
             ) : node2Logs.length > 0 ? (
               node2Logs.map((log, index) => (
-                <div key={index} style={styles.logEntry}>
+                <div key={index} className="logEntry">
                   {log}
                 </div>
               ))
             ) : (
-              <div style={styles.noLogs}>No logs available for Node 2</div>
+              <div className="noLogs">No logs available for Node 2</div>
             )}
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-const styles = {
-  logsContainer: {
-    width: '100%',
-    maxWidth: '1200px',
-    margin: '20px auto',
-    textAlign: 'center',
-    padding: '20px',
-  },
-  logsWrapper: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    gap: '20px',
-  },
-  logBox: {
-    flex: 1,
-    minWidth: '400px',
-  },
-  logs: {
-    height: '400px',
-    overflowY: 'auto',
-    border: '2px solid #33ff33',
-    backgroundColor: '#000',
-    color: '#33ff33',
-    padding: '10px',
-    fontFamily: "'Courier New', monospace",
-    fontSize: '14px',
-    whiteSpace: 'pre-wrap',
-  },
-  logEntry: {
-    margin: '2px 0',
-    textAlign: 'left',
-  },
-  loading: {
-    color: '#33ff33',
-    textAlign: 'center',
-    padding: '20px',
-  },
-  noLogs: {
-    color: '#33ff33',
-    textAlign: 'center',
-    padding: '20px',
-  },
 };
 
 export default MQTTLogs;
