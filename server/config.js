@@ -1,7 +1,8 @@
 // server/config.js
-module.exports = {
-    mongoURI: 'mongodb+srv://suryanshkgp:m3$JviM$d*X32cB@cluster0.lgvfa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0m',
-    geminiApiKey: 'AIzaSyAaG5Wrf-3MUqvDuNJsNvGHrFoSQs_CSZk',
-    jwtSecret: 'hello'
-};
+require('dotenv').config();
 
+module.exports = {
+    mongoURI: process.env.MONGO_URI,
+    geminiApiKey: process.env.GEMINI_API_KEY,
+    jwtSecret: process.env.JWT_SECRET
+};
