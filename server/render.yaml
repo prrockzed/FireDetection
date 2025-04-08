@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: your-app-name
+    buildCommand: npm run build
+    publishDirectory: build
+    # other configurations...
