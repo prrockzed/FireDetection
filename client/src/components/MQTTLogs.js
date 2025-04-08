@@ -32,7 +32,7 @@ const MQTTLogs = () => {
       try {
         setIsLoading(true);
         // Fetch all logs
-        const response = await axios.get('http://localhost:8080/api/logs');
+        const response = await axios.get('http://firedetection-server.onrender.com/api/logs');
         const allLogs = response.data;
         
         // Distribute logs between nodes
@@ -63,7 +63,7 @@ const MQTTLogs = () => {
     fetchLogs();
     
     // Set up Socket.IO for real-time updates
-    const socket = io('http://localhost:8080');
+    const socket = io('http://firedetection-server.onrender.com');
     
     socket.on('sensor_data', (allLogs) => {
       console.log('Received real-time sensor data update');
