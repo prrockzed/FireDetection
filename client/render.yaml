@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: backend
+    buildCommand: npm run build
+    publishDirectory: build
+    # other configurations...
