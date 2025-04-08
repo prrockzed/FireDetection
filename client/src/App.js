@@ -71,7 +71,7 @@ const DownloadTab = () => {
     setIsLoading(true);
     try {
       // Fetch logs from the backend with authentication
-      const response = await axios.get('http://firedetection-server.onrender.com/api/logs', {
+      const response = await axios.get('https://firedetection-server.onrender.com/api/logs', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -196,7 +196,7 @@ const ChatbotTab = () => {
     setLoading(true);
     setResponse('');
     try {
-      const res = await axios.get(`http://firedetection-server.onrender.com/api/chatbot/query`, {
+      const res = await axios.get(`https://firedetection-server.onrender.com/api/chatbot/query`, {
         params: { node_id: nodeId, query }
       });
       setResponse(res.data.response);
